@@ -204,12 +204,28 @@ y agregue la seccion build al final del tag project en el archivo pom.xml:
   * mvn tomcat7:run
   
 5. Abra un navegador, y en la barra de direcciones ponga la URL con la cual se le enviarán peticiones al ‘SampleServlet’. Tenga en cuenta que la URL tendrá como host ‘localhost’, como puerto, el configurado en el pom.xml y el path debe ser el del Servlet. Debería obtener un mensaje de saludo.
+ 
+    ![Hello](https://github.com/Esteban297/Lab_5_CVDS/blob/master/3.jpeg)  
 
 6. Observe que el Servlet ‘SampleServlet’ acepta peticiones GET, y opcionalmente, lee el parámetro ‘name’. Ingrese la misma URL, pero ahora agregando un parámetro GET (si no sabe como hacerlo, revise la documentación en http://www.w3schools.com/tags/ref_httpmethods.asp).
+
+    ![Hello Esteban](https://github.com/Esteban297/Lab_5_CVDS/blob/master/4.jpeg)
 
 7. Busque el artefacto gson en el repositorio de maven y agregue la dependencia.
 
 8. En el navegador revise la dirección https://jsonplaceholder.typicode.com/todos/1. Intente cambiando diferentes números al final del path de la url.
+    * Id = 1
+    
+      ![Id1](https://github.com/Esteban297/Lab_5_CVDS/blob/master/5.jpeg)
+      
+      
+    * Id = 2
+   
+      ![Id1](https://github.com/Esteban297/Lab_5_CVDS/blob/master/6.jpeg)
+     
+    * Id = 3
+    
+      ![Id1](https://github.com/Esteban297/Lab_5_CVDS/blob/master/7.jpeg)
 
 9. Basado en la respuesta que le da el servicio del punto anterior, cree la clase edu.eci.cvds.servlet.model.Todo con un constructor vacío y los métodos getter y setter para las propiedades de los "To Dos" que se encuentran en la url indicada.
 
@@ -272,36 +288,44 @@ public class Service {
        return stringBuilder.append("</table>").toString();
    }
 }
-Cree una clase que herede de la clase HttpServlet (similar a SampleServlet), y para la misma sobrescriba el método heredado doGet. Incluya la anotación @Override para verificar –en tiempo de compilación- que efectivamente se esté sobreescribiendo un método de las superclases.
+11. Cree una clase que herede de la clase HttpServlet (similar a SampleServlet), y para la misma sobrescriba el método heredado doGet. Incluya la anotación @Override para verificar –en tiempo de compilación- que efectivamente se esté sobreescribiendo un método de las superclases.
 
-Para indicar en qué URL el servlet interceptará las peticiones GET, agregue al método la anotación @WebServlet, y en dicha anotación, defina la propiedad urlPatterns, indicando la URL (que usted defina) a la cual se asociará el servlet.
+12. Para indicar en qué URL el servlet interceptará las peticiones GET, agregue al método la anotación @WebServlet, y en dicha anotación, defina la propiedad urlPatterns, indicando la URL (que usted defina) a la cual se asociará el servlet.
 
-Teniendo en cuenta las siguientes métodos disponibles en los objetos ServletRequest y ServletResponse recibidos por el método doGet:
+13. Teniendo en cuenta las siguientes métodos disponibles en los objetos ServletRequest y ServletResponse recibidos por el método doGet:
 
-response.setStatus(N); <- Indica con qué código de error N se generará la respuesta. Usar la clase HttpServletResponse para indicar el código de respuesta.
-request.getParameter(param); <- Consulta el parámetro recibido, asociado al nombre ‘param’.
-response.getWriter() <- Retorna un objeto PrintWriter a través del cual se le puede enviar la respuesta a quien hizo la petición.
-response.setContentType(T) <- Asigna el tipo de contenido (MIME type) que se entregará en la respuesta.
+   * response.setStatus(N); <- Indica con qué código de error N se generará la respuesta. Usar la clase HttpServletResponse para indicar el código de respuesta
+   * request.getParameter(param); <- Consulta el parámetro recibido, asociado al nombre ‘param’.
+   * response.getWriter() <- Retorna un objeto PrintWriter a través del cual se le puede enviar la respuesta a quien hizo la petición.
+   * response.setContentType(T) <- Asigna el tipo de contenido (MIME type) que se entregará en la respuesta.
 Implemente dicho método de manera que:
 
-Asuma que la petición HTTP recibe como parámetro el número de id de una lista de cosas por hacer (todo), y que dicha identificación es un número entero.
+  * Asuma que la petición HTTP recibe como parámetro el número de id de una lista de cosas por hacer (todo), y que dicha identificación es un número entero.
 
-Con el identificador recibido, consulte el item por hacer de la lista de cosas por hacer, usando la clase "Service" creada en el punto 10.
+  * Con el identificador recibido, consulte el item por hacer de la lista de cosas por hacer, usando la clase "Service" creada en el punto 10.
+  
+  * Si el item existe:
+      * Responder con el código HTTP que equivale a ‘OK’ (ver referencia anterior), y como contenido de dicha respuesta, el código html correspondiente a una página con una tabla que tenga los detalles del item, usando la clase "Service" creada en el punto 10 par crear la tabla.
+  * Si el item no existe:
+      * Responder con el código correspondiente a ‘no encontrado’, y con el código de una página html que indique que no existe un item con el identificador dado.
+      * Si no se paso parámetro opcional, o si el parámetro no contiene un número entero, devolver el código equivalente a requerimiento inválido.
+      * Si se genera la excepcion MalformedURLException devolver el código de error interno en el servidor
+      * Para cualquier otra excepcion, devolver el código equivalente a requerimiento inválido.
+14. Una vez hecho esto, verifique el funcionamiento de la aplicación, recompile y ejecute la aplicación.
+  
+      ![14](https://github.com/Esteban297/Lab_5_CVDS/blob/master/8.jpeg)
 
-Si el item existe:
-Responder con el código HTTP que equivale a ‘OK’ (ver referencia anterior), y como contenido de dicha respuesta, el código html correspondiente a una página con una tabla que tenga los detalles del item, usando la clase "Service" creada en el punto 10 par crear la tabla.
-Si el item no existe:
-Responder con el código correspondiente a ‘no encontrado’, y con el código de una página html que indique que no existe un item con el identificador dado.
-Si no se paso parámetro opcional, o si el parámetro no contiene un número entero, devolver el código equivalente a requerimiento inválido.
-Si se genera la excepcion MalformedURLException devolver el código de error interno en el servidor
-Para cualquier otra excepcion, devolver el código equivalente a requerimiento inválido.
-Una vez hecho esto, verifique el funcionamiento de la aplicación, recompile y ejecute la aplicación.
+15. Intente hacer diferentes consultas desde un navegador Web para probar las diferentes funcionalidades.
+  
+      ![15.1](https://github.com/Esteban297/Lab_5_CVDS/blob/master/9.jpeg)
+  
+      ![15.2](https://github.com/Esteban297/Lab_5_CVDS/blob/master/10.jpeg)
+  
+      ![15.3](https://github.com/Esteban297/Lab_5_CVDS/blob/master/11.jpeg)
 
-Intente hacer diferentes consultas desde un navegador Web para probar las diferentes funcionalidades.
-
-PARTE III.
-En su servlet, sobreescriba el método doPost, y haga la misma implementación del doGet.
-Cree el archivo index.html en el directorio src/main/webapp/index.html de la siguiente manera:
+### PARTE III.
+16. En su servlet, sobreescriba el método doPost, y haga la misma implementación del doGet.
+17. Cree el archivo index.html en el directorio src/main/webapp/index.html de la siguiente manera:
 
 <!DOCTYPE html>
 <html>
@@ -313,29 +337,29 @@ Cree el archivo index.html en el directorio src/main/webapp/index.html de la sig
         <h1>Hello World!</h1>
     </body>
 </html>
-En la página anterior, cree un formulario que tenga un campo para ingresar un número (si no ha manejado html antes, revise http://www.w3schools.com/html/ ) y un botón. El formulario debe usar como método ‘POST’, y como acción, la ruta relativa del último servlet creado (es decir la URL pero excluyendo ‘http://localhost:8080/’).
+18. En la página anterior, cree un formulario que tenga un campo para ingresar un número (si no ha manejado html antes, revise http://www.w3schools.com/html/ ) y un botón. El formulario debe usar como método ‘POST’, y como acción, la ruta relativa del último servlet creado (es decir la URL pero excluyendo ‘http://localhost:8080/’).
+  
+  ![FORM](https://github.com/Esteban297/Lab_5_CVDS/blob/master/16.jpeg)
+  ![POST](https://github.com/Esteban297/Lab_5_CVDS/blob/master/14.jpeg)
 
-Revise este ejemplo de validación de formularios con javascript y agruéguelo a su formulario, de manera que -al momento de hacer ‘submit’- desde el browser se valide que el valor ingresado es un valor numérico.
+19. Revise este ejemplo de validación de formularios con javascript y agruéguelo a su formulario, de manera que -al momento de hacer ‘submit’- desde el browser se valide que el valor ingresado es un valor numérico.
 
-Recompile y ejecute la aplicación. Abra en su navegador en la página del formulario, y rectifique que la página hecha anteriormente sea mostrada. Ingrese los datos y verifique los resultados. Cambie el formulario para que ahora en lugar de POST, use el método GET . Qué diferencia observa?
+20. Recompile y ejecute la aplicación. Abra en su navegador en la página del formulario, y rectifique que la página hecha anteriormente sea mostrada. Ingrese los datos y verifique los resultados. Cambie el formulario para que ahora en lugar de POST, use el método GET . Qué diferencia observa?
+  
+  ![FORM](https://github.com/Esteban297/Lab_5_CVDS/blob/master/16.jpeg)
+  ![GET](https://github.com/Esteban297/Lab_5_CVDS/blob/master/13.jpeg)
 
 ¿Qué se está viendo? Revise cómo están implementados los métodos de la clase Service.java para entender el funcionamiento interno.
+    * La diferencia es que con POST el URL aparece sin el nombre ni valor del parametro ingresado y con GET esta información si es visible
 
-PARTE IV. - FRAMEWORKS WEB MVC – JAVA SERVER FACES / PRIME FACES
+### PARTE IV. - FRAMEWORKS WEB MVC – JAVA SERVER FACES / PRIME FACES
 En este ejercicio, usted va a desarrollar una aplicación Web basada en el marco JSF, y en una de sus implementaciones más usadas: PrimeFaces. 
 
 Escriba una aplicación web que utilice PrimeFaces para calcular la media, la moda, la desviación estándar y varianza de un conjunto de N números reales. Este conjunto de N números reales deben ser ingresados por el usuario de manera que puedan ser utilizados para los cálculos.
 
+1. Al proyecto Maven, debe agregarle las dependencias mas recientes de javax.javaee-api, com.sun.faces.jsf-api, com.sun.faces.jsf-impl, javax.servlet.jstl y Primefaces (en el archivo pom.xml).
 
-Diagrama de casos de uso de la aplicación:
-
-
-
-
-
-Al proyecto Maven, debe agregarle las dependencias mas recientes de javax.javaee-api, com.sun.faces.jsf-api, com.sun.faces.jsf-impl, javax.servlet.jstl y Primefaces (en el archivo pom.xml).
-
-Para que configure automáticamente el descriptor de despliegue de la aplicación (archivo web.xml), de manera que el framework JSF se active al inicio de la aplicación, en el archivo web.xml agregue la siguiente configuración:
+2. Para que configure automáticamente el descriptor de despliegue de la aplicación (archivo web.xml), de manera que el framework JSF se active al inicio de la aplicación, en el archivo web.xml agregue la siguiente configuración:
 
 <servlet>
    <servlet-name>Faces Servlet</servlet-name>
@@ -349,60 +373,67 @@ Para que configure automáticamente el descriptor de despliegue de la aplicació
 <welcome-file-list>
    <welcome-file>faces/index.jsp</welcome-file>
 </welcome-file-list>
-Revise cada una de las configuraciones agregadas anteriormente para saber qué hacen y por qué se necesitan. Elimine las que no se necesiten.
+  
+3. Revise cada una de las configuraciones agregadas anteriormente para saber qué hacen y por qué se necesitan. Elimine las que no se necesiten.
+  
+  Se puede decir que todas son necesarias:
+	* <servlet> Se utiliza para especificar un Java servlet y sus parametros, los Servlets no pueden ser llamados directamente por lo que una o mas Servlet tags y Servlet-mappigs deben existir para decirle a Tomcat cuando llamar el Servlet
+	* <servlet-mapping> Especifica un URL para el servlet definido con el tag <servlet>
+	* <welcome-file-list> Especifica los archivos que seran mostrados cuando no se provee un nombre de archivo en el URL
 
-Ahora, va a crear un Backing-Bean de sesión, el cual, para cada usuario, mantendrá de lado del servidor las siguientes propiedades:
 
-El conjunto de datos ingresados por el usuario.
+4. Ahora, va a crear un Backing-Bean de sesión, el cual, para cada usuario, mantendrá de lado del servidor las siguientes propiedades:
 
-Los resultados de las operaciones.
-
-La cantidad de números ingresados por el usuario.
+    1. El conjunto de datos ingresados por el usuario.
+    2. Los resultados de las operaciones.
+    3. La cantidad de números ingresados por el usuario.
 
 Para hacer esto, cree una clase que tenga:
-el constructor por defecto (sin parámetros)
-los métodos get/set necesarios dependiendo si las propiedades son de escritura o lectura
+    * El constructor por defecto (sin parámetros)
+    * Los métodos get/set necesarios dependiendo si las propiedades son de escritura o lectura
 coloque las anotaciones:
-@ManagedBean, incluyendo el nombre: @ManagedBean(name = "calculadoraBean").
-@ApplicationScoped.
+        * @ManagedBean, incluyendo el nombre: @ManagedBean(name = "calculadoraBean")
+        * @ApplicationScoped.
 A la implementación de esta clase, agregue los siguientes métodos:
-calculateMean: Debe recibir como parámetro el listado de valores y retornar el promedio de los números en ella.
-calculateStandardDeviation: Debe recibir como parámetro el listado de valores y retornar el la desviación estandar de los números en ella.
-calculateVariance: Debe recibir como parámetro el listado de valores y retornar la varianza de los números en ella.
-calculateMode: Debe recibir como parámetro el listado de valores y retornar la moda de los números en ella.
-restart: Debe volver a iniciar la aplicación (Borrar el campo de texto para que el usuario agregue los datos).
-Cree una página XHTML, de nombre calculadora.xhtml (debe quedar en la ruta src/main/webapp). Revise en la página 13 del manual de PrimeFaces, qué espacios de nombres XML requiere una página de PrimeFaces y cuál es la estructura básica de la misma.
+    * calculateMean: Debe recibir como parámetro el listado de valores y retornar el promedio de los números en ella.
+    * calculateStandardDeviation: Debe recibir como parámetro el listado de valores y retornar el la desviación estandar de los números en ella.
+      * calculateVariance: Debe recibir como parámetro el listado de valores y retornar la varianza de los números en ella.
+    * calculateMode: Debe recibir como parámetro el listado de valores y retornar la moda de los números en ella.
+    * restart: Debe volver a iniciar la aplicación (Borrar el campo de texto para que el usuario agregue los datos).
+  
+5. Cree una página XHTML, de nombre calculadora.xhtml (debe quedar en la ruta src/main/webapp). Revise en la página 13 del manual de PrimeFaces, qué espacios de nombres XML requiere una página de PrimeFaces y cuál es la estructura básica de la misma.
 
-Con base en lo anterior, agregue un formulario con identificador calculadora_form con el siguiente contenido básico:
+6. Con base en lo anterior, agregue un formulario con identificador calculadora_form con el siguiente contenido básico:
 
 <h:body>
  <h:form id="calculadora_form">
 
  </h:form>
 </h:body>
-Al formulario, agregue:
+  
+7. Al formulario, agregue:
 
-Un elemento de tipo <p:outputLabel> para el resultado de la moda, sin embargo, este elemento se debe ocultar. Para ocultarlo, se puede agregar el estilo display: none; al elemento. Una forma de hacerlo es por medio de la propiedad style.
-En una aplicacion real, no se debería tener este elemento, solo se crea con el fin de simplificar una prueba futura.
-Un elemento <p:inputText>para que el usuario ingrese los números. (Tenga en cuenta que una opción para separar los números es con “;” aunque no necesariamente debe hacerlo así) 
+  * Un elemento de tipo <p:outputLabel> para el resultado de la moda, sin embargo, este elemento se debe ocultar. Para ocultarlo, se puede agregar el estilo display: none; al elemento. Una forma de hacerlo es por medio de la propiedad style.
+    * En una aplicacion real, no se debería tener este elemento, solo se crea con el fin de simplificar una prueba futura.
+  * Un elemento <p:inputText>para que el usuario ingrese los números. (Tenga en cuenta que una opción para separar los números es con “;” aunque no necesariamente debe hacerlo así) 
+  Por ejemplo:
+    * 2; 3.5; 4.8; 5.1
 
-Por ejemplo:
+  * Un elemento de tipo <p:outputLabel> para mostrar cada una de las operaciones resultantes. Y asocie dichos elementos al BackingBean de sesión a través de su propiedad value, y usando como referencia el nombre asignado: value="#{calculadoraBean.nombrePropiedad}"
 
-2; 3.5; 4.8; 5.1
+8. Al formulario, agregue dos botones de tipo <p:commandButton>, cuatro para enviar la lista de números ingresados y ver el calculo de cada valor, y otro para reiniciar el juego.
 
-Un elemento de tipo <p:outputLabel> para mostrar cada una de las operaciones resultantes. Y asocie dichos elementos al BackingBean de sesión a través de su propiedad value, y usando como referencia el nombre asignado: value="#{calculadoraBean.nombrePropiedad}"
+  * El botón de Calculo de valores debe tener asociado a su propiedad update el nombre del formulario en el que se agregaron los campos antes descritos, de manera que al hacer clic, se ejecute un ciclo de JSF y se refresque la vista.
 
-Al formulario, agregue dos botones de tipo <p:commandButton>, cuatro para enviar la lista de números ingresados y ver el calculo de cada valor, y otro para reiniciar el juego.
-
-El botón de Calculo de valores debe tener asociado a su propiedad update el nombre del formulario en el que se agregaron los campos antes descritos, de manera que al hacer clic, se ejecute un ciclo de JSF y se refresque la vista.
-
-Debe tener también una propiedad actionListener con la cual se le indicará que, al hacer clic, se ejecutará el método CalculateXXX, creado en el backing-bean de sesión:
+* Debe tener también una propiedad actionListener con la cual se le indicará que, al hacer clic, se ejecutará el método CalculateXXX, creado en el backing-bean de sesión:
 
 <p:commandButton update="calculadora_form" actionListener="#{calculadoraBean.calculateXXX}">...
-El botón de reiniciar juego tendrá las mismas propiedades de update y actionListener del otro con el valor correspondiente:
+  
+* El botón de reiniciar juego tendrá las mismas propiedades de update y actionListener del otro con el valor correspondiente:
 
 <p:commandButton update="…" actionListener="…">
-Para verificar el funcionamiento de la aplicación, agregue el plugin tomcat-runner dentro de los plugins de la fase de construcción (build). Tenga en cuenta que en la configuración del plugin se indica bajo que ruta quedará la aplicación:
+  
+9. Para verificar el funcionamiento de la aplicación, agregue el plugin tomcat-runner dentro de los plugins de la fase de construcción (build). Tenga en cuenta que en la configuración del plugin se indica bajo que ruta quedará la aplicación:
 
 mvn package
 
@@ -410,26 +441,26 @@ mvn tomcat7:run
 
 Si no hay errores, la aplicación debería quedar accesible en la URL: http://localhost:8080/faces/calculadora.xhtml
 
-Si todo funcionó correctamente, realice las siguientes pruebas:
+10. Si todo funcionó correctamente, realice las siguientes pruebas:
 
-Abra la aplicación en un explorador. Realice algunas pruebas de aceptación con la aplicación.
+  * Abra la aplicación en un explorador. Realice algunas pruebas de aceptación con la aplicación.
 
-Abra la aplicación en dos computadores diferentes. Si no dispone de uno, hágalo en dos navegadores diferentes (por ejemplo Chrome y Firefox; incluso se puede en un único navegador usando una ventana normal y una ventana de incógnito / privada). Haga cinco intentos en uno, y luego un intento en el otro. ¿Qué valor tiene cada uno?
+  * Abra la aplicación en dos computadores diferentes. Si no dispone de uno, hágalo en dos navegadores diferentes (por ejemplo Chrome y Firefox; incluso se puede en un único navegador usando una ventana normal y una ventana de incógnito / privada). Haga cinco intentos en uno, y luego un intento en el otro. ¿Qué valor tiene cada uno?
 
-Aborte el proceso de Tomcat-runner haciendo Ctrl+C en la consola, y modifique el código del backing-bean de manera que use la anotación @SessionScoped en lugar de @ApplicationScoped. Reinicie la aplicación y repita el ejercicio anterior.
-Dado la anterior, ¿Cuál es la diferencia entre los backing-beans de sesión y los de aplicación?
-Por medio de las herramientas de desarrollador del explorador (Usando la tecla "F12" en la mayoría de exploradores):
-Ubique el código HTML generado por el servidor.
-Busque el elemento oculto, que contiene el número generado aleatoriamente.
-En la sección de estilos, deshabilite el estilo que oculta el elemento para que sea visible.
-Observe el cambio en la página, cada vez que se realiza un cambio en el estilo.
-Revise qué otros estilos se pueden agregar a los diferentes elementos y qué efecto tienen en la visualización de la página.
-Actualice la página. Los cambios de estilos realizados desaparecen, pues se realizaron únicamente en la visualización, la respuesta del servidor sigue siendo la misma, ya que el contenido de los archivos allí almacenados no se ha modificado.
-Revise qué otros cambios se pueden realizar y qué otra información se puede obtener de las herramientas de desarrollador.
-Para facilitar los intentos del usuario, se agregará una lista de los últimos valores ingresados:
+  * Aborte el proceso de Tomcat-runner haciendo Ctrl+C en la consola, y modifique el código del backing-bean de manera que use la anotación @SessionScoped en lugar de @ApplicationScoped. Reinicie la aplicación y repita el ejercicio anterior.
+    * Dado la anterior, ¿Cuál es la diferencia entre los backing-beans de sesión y los de aplicación?
+  * Por medio de las herramientas de desarrollador del explorador (Usando la tecla "F12" en la mayoría de exploradores):
+    * Ubique el código HTML generado por el servidor.
+    * Busque el elemento oculto, que contiene el número generado aleatoriamente.
+    * En la sección de estilos, deshabilite el estilo que oculta el elemento para que sea visible.
+    * Observe el cambio en la página, cada vez que se realiza un cambio en el estilo.
+    * Revise qué otros estilos se pueden agregar a los diferentes elementos y qué efecto tienen en la visualización de la página.
+    * Actualice la página. Los cambios de estilos realizados desaparecen, pues se realizaron únicamente en la visualización, la respuesta del servidor sigue siendo la misma, ya que el contenido de los archivos allí almacenados no se ha modificado.
+    * Revise qué otros cambios se pueden realizar y qué otra información se puede obtener de las herramientas de desarrollador.
+11. Para facilitar los intentos del usuario, se agregará una lista de los últimos valores ingresados:
 
-Agregue en el Backing-Bean, una propiedad que contenga una lista de valores ingresados por el usuario.
+  * Agregue en el Backing-Bean, una propiedad que contenga una lista de valores ingresados por el usuario.
 
-Cuando se reinicie la aplicación, limpie el contenido de la lista.
+ * Cuando se reinicie la aplicación, limpie el contenido de la lista.
 
-Busque cómo agregar una tabla a la página, cuyo contenido sea la lista de listas de números.
+ * Busque cómo agregar una tabla a la página, cuyo contenido sea la lista de listas de números.
