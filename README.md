@@ -4,7 +4,7 @@
 
 ### Parte 1
 
-1. Abra una terminal Linux o consola de comandos Windows. 
+1. Abra una terminal Linux o consola de comandos Windows.                                                                                                                                      ![Open](https://github.com/Esteban297/Lab_5_CVDS/blob/master/0.jpeg)
 2. Realice una conexión síncrona TCP/IP a través de Telnet/Netcat al siguiente servidor:
    * Host: www.escuelaing.edu.co
    * Puerto: 80
@@ -16,6 +16,7 @@
 3. Antes de que el servidor cierre la conexión por falta de comunicación:
     * Revise la página 36 del RFC del protocolo HTTP, sobre cómo realizar una petición GET. Con esto, solicite al servidor el recurso ‘sssss/abc.html’, usando la versión 1.0 de HTTP.
       * GET "/sssss/abc.html HTTP/1.1"
+      ![2](https://github.com/Esteban297/Lab_5_CVDS/blob/master/1.jpeg)
     * Asegúrese de presionar ENTER dos veces después de ingresar el comando.
     * Revise el resultado obtenido. ¿Qué codigo de error sale?, revise el significado del mismo en la lista de códigos de estado HTTP.
       * El error arrojado es 400 Bad Request. Lo cual significa que el servidor no puede o no procesara la petición debido a un error aparente de cliente (ej. sintaxis de petición mal formada, tamaño muy grande, framming de mensaje de solicitud invalid, o enrutamiento de solicitud engañosa)
@@ -202,6 +203,7 @@ y agregue la seccion build al final del tag project en el archivo pom.xml:
 
   * mvn package
   * mvn tomcat7:run
+  ![mvn](https://github.com/Esteban297/Lab_5_CVDS/blob/master/2.jpeg)
   
 5. Abra un navegador, y en la barra de direcciones ponga la URL con la cual se le enviarán peticiones al ‘SampleServlet’. Tenga en cuenta que la URL tendrá como host ‘localhost’, como puerto, el configurado en el pom.xml y el path debe ser el del Servlet. Debería obtener un mensaje de saludo.
  
